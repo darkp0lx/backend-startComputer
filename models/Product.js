@@ -1,13 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const productSchema = new Schema({
-  id: String,
   nombre: String,
   image: String,
   precio: Number
 })
-
-const Product = model('Product', productSchema)
 
 productSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -16,5 +13,6 @@ productSchema.set('toJSON', {
     delete returnedObject.__v
   }
 })
+const Product = model('Product', productSchema)
 
 module.exports = Product

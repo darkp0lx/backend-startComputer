@@ -45,22 +45,25 @@ app.delete('/api/products/:id', async (req, res) => {
 })
 
 app.post('/api/products', async (req, res) => {
-  const products = await Product.find({})
-  const { nombre, image, precio } = req.body
+  const { nombre, image, precio } = req.query
   const newProduct = new Product({
     nombre: nombre,
-    image,
-    date: new Date(),
     image: image,
     precio: precio
   })
+
+  if (!nombre) {
+    return res.status(400).json({
+      error: 'required "content" field is missing'
+    })
+  }
+
   try {
     const savedProduct = await newProduct.save()
     res.json(savedProduct)
   } catch (err) {
     console.log(err)
   }
-  console.log(products, 'products')
 })
 
 app.put('/api/products/:id', async (req, res) => {
