@@ -1,10 +1,10 @@
 require('./mongo')
 const Product = require('./models/Product')
-
+const cors = require('cors')
 var express = require('express')
 const { json } = require('express')
 var app = express()
-
+app.use(cors())
 app.use(express.json())
 
 app.get('/api/products', async (req, res) => {
