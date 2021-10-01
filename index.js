@@ -2,7 +2,6 @@ require('./mongo')
 const Product = require('./models/Product')
 const cors = require('cors')
 var express = require('express')
-const { json } = require('express')
 var app = express()
 app.use(cors())
 app.use(express.json())
@@ -27,6 +26,14 @@ app.get('/api/products/:id', async (req, res, next) => {
       .end()
       .catch(err => next(err))
   }
+})
+app.get('/api/product/:nombre', async (req, res, next) => {
+  let nombre = req.params.nombre
+  Product.find({
+    nombre: {
+      $regex: new RegExp(nombre, 'ig')
+    }
+  }).then(response => res.json(response))
 })
 
 app.delete('/api/products/:id', async (req, res) => {
@@ -87,9 +94,9 @@ app.use((req, res) => {
   })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3002
 const server = app.listen(PORT, () => {
-  console.log('Server listening on')
+  console.log('Server listening on ' + PORT)
 })
 
 module.exports = { server, app }
